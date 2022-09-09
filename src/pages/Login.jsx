@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 
 export class Login extends Component {
   constructor() {
@@ -9,10 +9,11 @@ export class Login extends Component {
       buttonDisable: true,
     };
   }
-  
+
   handleChange = ({ target }) => {
-    this.setState({ [target.name]: target.value,
-       buttonDisable: this.validForm(),
+    this.setState({
+      [target.name]: target.value,
+      buttonDisable: this.validForm(),
     });
   };
 
@@ -21,7 +22,7 @@ export class Login extends Component {
     const isValid = name.length > 0 && gravatarEmail.length > 0;
     return !isValid;
   };
-  
+
   render() {
     const {
       name,
@@ -31,38 +32,38 @@ export class Login extends Component {
 
     return (
       <div>
-        <form onSubmit = { this.handleSubmit }>
-        <label htmlFor="">
+        <form onSubmit={ this.handleSubmit }>
+          <label htmlFor="name">
             Nome
-          <input 
-            type="text"
-            data-testid='input-player-name'
-            name='name'
-            value = { name } 
-            onChange = { this.handleChange }
-          />
-        </label>
-        <label htmlFor="">
+            <input
+              type="text"
+              data-testid="input-player-name"
+              name="name"
+              value={ name }
+              onChange={ this.handleChange }
+            />
+          </label>
+          <label htmlFor="gravatarEmail">
             E-mail
-          <input 
-            type="text"
-            data-testid='input-gravatar-email'
-            name='gravatarEmail'
-            value = { gravatarEmail } 
-            onChange = { this.handleChange }
-          />
-        </label>
-        <button
-          type='submit'
-          data-testid='btn-play'
-          disabled = { buttonDisable }
-         >
-          Play
-        </button> 
+            <input
+              type="text"
+              data-testid="input-gravatar-email"
+              name="gravatarEmail"
+              value={ gravatarEmail }
+              onChange={ this.handleChange }
+            />
+          </label>
+          <button
+            type="submit"
+            data-testid="btn-play"
+            disabled={ buttonDisable }
+          >
+            Play
+          </button>
         </form>
       </div>
     );
-  };
-};
+  }
+}
 
 export default Login;
