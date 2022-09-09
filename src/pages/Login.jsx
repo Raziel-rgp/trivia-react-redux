@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 import FetchAPI from '../services/FetchAPI';
+import requestLogin from '../redux/actions';
 
-export class Login extends Component {
+class Login extends Component {
   constructor() {
     super();
     this.state = {
@@ -14,6 +17,9 @@ export class Login extends Component {
 
   requestTokenAPI = async (e) => {
     e.preventDefault();
+    const { gravatarEmail, name } = this.state;
+    const { dispatch } = this.props;
+    dispatch(requestLogin(gravatarEmail, name));
     const { history } = this.props;
     const requestToken = await FetchAPI();
     localStorage.setItem('token', requestToken);
@@ -71,6 +77,14 @@ export class Login extends Component {
           >
             Play
           </button>
+          <Link to="/settings">
+            <button
+              data-testid="btn-settings"
+              type="button"
+            >
+              Configuração
+            </button>
+          </Link>
         </form>
       </div>
     );
@@ -81,6 +95,7 @@ Login.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
+  dispatch: PropTypes.func.isRequired,
 };
 
-export default Login;
+export default connect()(Login);
