@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import FetchAPI from '../services/FetchAPI';
 
 export class Login extends Component {
   constructor() {
@@ -9,6 +11,14 @@ export class Login extends Component {
       buttonDisable: true,
     };
   }
+
+  requestTokenAPI = async (e) => {
+    e.preventDefault();
+    const { history } = this.props;
+    const requestToken = await FetchAPI();
+    localStorage.setItem('token', requestToken);
+    history.push('/game');
+  };
 
   handleChange = ({ target }) => {
     this.setState({
@@ -57,6 +67,7 @@ export class Login extends Component {
             type="submit"
             data-testid="btn-play"
             disabled={ buttonDisable }
+            onClick={ this.requestTokenAPI }
           >
             Play
           </button>
@@ -65,5 +76,11 @@ export class Login extends Component {
     );
   }
 }
+
+Login.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
+};
 
 export default Login;
