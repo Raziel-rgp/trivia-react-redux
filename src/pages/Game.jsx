@@ -11,6 +11,8 @@ class Game extends Component {
     indexQuestion: 0,
     isDisable: false,
     allAnswers: [],
+    classNameCorrect: '',
+    classNameWrong: '',
   };
 
   async componentDidMount() {
@@ -25,7 +27,9 @@ class Game extends Component {
 
   handleClick = () => {
     const { indexQuestion } = this.state;
-    this.setState({ indexQuestion: indexQuestion + 1 }, () => this.validIndex());
+    this.setState({ indexQuestion: indexQuestion + 1,
+      classNameCorrect: '',
+      classNameWrong: '' }, () => this.validIndex());
   };
 
   validIndex = () => {
@@ -51,10 +55,25 @@ class Game extends Component {
     return array;
   };
 
+  checkCorrectAnswer = () => {
+    this.setState({
+      classNameCorrect: 'correct',
+      classNameWrong: 'wrong',
+    });
+  };
+
   render() {
-    const { conditional, indexQuestion, askArray, isDisable, allAnswers } = this.state;
+    const { conditional,
+      indexQuestion,
+      askArray,
+      isDisable,
+      allAnswers,
+      classNameCorrect,
+      classNameWrong } = this.state;
+
+    console.log(classNameCorrect, classNameWrong);
     const randomArray = this.generateRandomIndex(allAnswers);
-    console.log(randomArray);
+
     return (
       <div>
         <Header />
@@ -70,7 +89,14 @@ class Game extends Component {
                   .correct_answer ? 'correct-answer' : `wrong-answer-${index}`
               }
               key={ index }
+              name={
+                item === askArray[indexQuestion]
+                  .correct_answer ? 'correct-answer' : `wrong-answer-${index}`
+              }
               type="button"
+              onClick={ this.checkCorrectAnswer }
+              className={ item === askArray[indexQuestion]
+                .correct_answer ? classNameCorrect : classNameWrong }
             >
               {item}
             </button>
