@@ -24,6 +24,7 @@ class Game extends Component {
     remainingTime: 30,
     randomArray: [],
     answersDisabled: false,
+    showNextButton: false,
   };
 
   async componentDidMount() {
@@ -70,28 +71,6 @@ class Game extends Component {
     });
   };
 
-  // checkCorrectAnswer = () => {
-  //   this.setState({
-  //     classNameCorrect: 'correct',
-  //     classNameWrong: 'wrong',
-  //   });
-  // };
-
-  // if (dificult === 'easy') {
-
-  // this.setState((prevState) => ({
-  //   score: Number(prevState.score) + (calcEasyPoints),
-  // }));
-  // } if (dificult === 'medium') {
-  // this.setState((prevState) => ({
-  //   score: Number(prevState.score) + (calcMediumPoints),
-  // }));
-  // }
-  // this.setState((prevState) => ({
-  //   score: Number(prevState.score) + (calcHardPoints),
-  // }));
-  // return 0;
-
   calcPoints = (target) => {
     const { dispatch } = this.props;
     const { remainingTime, askArray, indexQuestion } = this.state;
@@ -107,7 +86,9 @@ class Game extends Component {
     // travar o tempo ao clicar na resposta
     this.setState({ answersDisabled: true,
       classNameCorrect: 'correct',
-      classNameWrong: 'wrong' });
+      classNameWrong: 'wrong',
+      showNextButton: true,
+    });
     clearInterval(this.timerId);
     // pegar o tempo restante para calcular a pontuação.
     // 10 + timer * dificuldade
@@ -147,7 +128,8 @@ class Game extends Component {
       classNameCorrect,
       answersDisabled,
       remainingTime,
-      classNameWrong } = this.state;
+      classNameWrong,
+      showNextButton } = this.state;
 
     return (
       <div>
@@ -162,12 +144,12 @@ class Game extends Component {
             <button
               data-testid={
                 item === askArray[indexQuestion]
-                  .correct_answer ? 'correct-answer' : `wrong-answer-${index}`
+                  .correct_answer ? ANSWER_CORRECT : `wrong-answer-${index}`
               }
               key={ index }
               name={
                 item === askArray[indexQuestion]
-                  .correct_answer ? 'correct-answer' : `wrong-answer-${index}`
+                  .correct_answer ? ANSWER_CORRECT : `wrong-answer-${index}`
               }
               type="button"
               onClick={ this.pauseButton }
@@ -179,13 +161,18 @@ class Game extends Component {
             </button>
           ))}
         </div>
-        <button
-          disabled={ isDisable }
-          onClick={ this.handleClick }
-          type="button"
-        >
-          Pŕoxima Pergunta:
-        </button>
+        {showNextButton
+        && (
+          <button
+            data-testid="btn-next"
+            disabled={ isDisable }
+            onClick={ this.handleClick }
+            type="button"
+          >
+            Next
+          </button>
+        )}
+
       </div>
     );
   }
@@ -195,6 +182,7 @@ Game.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
+  dispatch: PropTypes.func.isRequired,
 };
 
 export default connect()(Game);
