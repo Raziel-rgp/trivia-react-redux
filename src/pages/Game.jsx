@@ -3,6 +3,14 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { requestAskAPI } from '../services/FetchAPI';
 import Header from '../components/Header';
+import { requestScore } from '../redux/actions';
+
+const ANSWER_CORRECT = 'correct-answer';
+const ALL_SCORES = {
+  easy: 1,
+  medium: 2,
+  hard: 3,
+};
 
 class Game extends Component {
   state = {
@@ -62,6 +70,51 @@ class Game extends Component {
     });
   };
 
+  // checkCorrectAnswer = () => {
+  //   this.setState({
+  //     classNameCorrect: 'correct',
+  //     classNameWrong: 'wrong',
+  //   });
+  // };
+
+  // if (dificult === 'easy') {
+
+  // this.setState((prevState) => ({
+  //   score: Number(prevState.score) + (calcEasyPoints),
+  // }));
+  // } if (dificult === 'medium') {
+  // this.setState((prevState) => ({
+  //   score: Number(prevState.score) + (calcMediumPoints),
+  // }));
+  // }
+  // this.setState((prevState) => ({
+  //   score: Number(prevState.score) + (calcHardPoints),
+  // }));
+  // return 0;
+
+  calcPoints = (target) => {
+    const { dispatch } = this.props;
+    const { remainingTime, askArray, indexQuestion } = this.state;
+    const { difficulty } = askArray[indexQuestion];
+    const point = 10;
+    const calcPoints = point + (remainingTime * ALL_SCORES[difficulty]);
+    if (target.name === ANSWER_CORRECT) {
+      dispatch(requestScore(calcPoints));
+    } return 0;
+  };
+
+  pauseButton = (event) => {
+    // travar o tempo ao clicar na resposta
+    this.setState({ answersDisabled: true,
+      classNameCorrect: 'correct',
+      classNameWrong: 'wrong' });
+    clearInterval(this.timerId);
+    // pegar o tempo restante para calcular a pontuação.
+    // 10 + timer * dificuldade
+    const { target } = event;
+    this.calcPoints(target);
+  };
+
   validIndex = () => {
     const { askArray, indexQuestion } = this.state;
     const MAX_LENGTH = 4;
@@ -83,13 +136,6 @@ class Game extends Component {
       [array[i], array[j]] = [array[j], array[i]];
     }
     return array;
-  };
-
-  checkCorrectAnswer = () => {
-    this.setState({
-      classNameCorrect: 'correct',
-      classNameWrong: 'wrong',
-    });
   };
 
   render() {
@@ -124,7 +170,7 @@ class Game extends Component {
                   .correct_answer ? 'correct-answer' : `wrong-answer-${index}`
               }
               type="button"
-              onClick={ this.checkCorrectAnswer }
+              onClick={ this.pauseButton }
               className={ item === askArray[indexQuestion]
                 .correct_answer ? classNameCorrect : classNameWrong }
               disabled={ answersDisabled }
