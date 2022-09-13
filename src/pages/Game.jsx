@@ -13,23 +13,53 @@ class Game extends Component {
     allAnswers: [],
     classNameCorrect: '',
     classNameWrong: '',
+    remainingTime: 30,
+    randomArray: [],
+    answersDisabled: false,
   };
 
   async componentDidMount() {
+    const { allAnswers } = this.state;
     const response = await requestAskAPI();
     if (response.length === 0) {
       const { history } = this.props;
       localStorage.removeItem('token');
       history.push('/');
     }
-    this.setState({ askArray: response, conditional: true }, () => this.validIndex());
+    this.setState({ askArray: response,
+      conditional: true,
+    }, () => this.validIndex());
+    this.functimer();
+    this.generateRandomIndex(allAnswers);
   }
 
+  functimer = () => {
+    const TIME = 1000;
+    this.timerId = setInterval(() => this.timerInterval(), TIME);
+  };
+
   handleClick = () => {
-    const { indexQuestion } = this.state;
+    const { indexQuestion, allAnswers } = this.state;
     this.setState({ indexQuestion: indexQuestion + 1,
       classNameCorrect: '',
-      classNameWrong: '' }, () => this.validIndex());
+      classNameWrong: '',
+      remainingTime: 30,
+      randomArray: this.generateRandomIndex(allAnswers),
+      answersDisabled: false,
+    }, () => this.validIndex());
+    this.functimer();
+  };
+
+  timerInterval = () => {
+    const { remainingTime } = this.state;
+    this.setState((prevState) => ({
+      remainingTime: prevState.remainingTime - 1,
+    }), () => {
+      if (remainingTime === 1) {
+        clearInterval(this.timerId);
+        this.setState({ answersDisabled: true });
+      }
+    });
   };
 
   validIndex = () => {
@@ -38,7 +68,7 @@ class Game extends Component {
     const indexQuestionLength = indexQuestion >= MAX_LENGTH;
     const allAnswers = [askArray[indexQuestion].correct_answer,
       ...askArray[indexQuestion].incorrect_answers];
-    this.setState({ allAnswers });
+    this.setState({ allAnswers, randomArray: this.generateRandomIndex(allAnswers) });
     if (indexQuestionLength) {
       this.setState({ isDisable: true });
     }
@@ -67,16 +97,16 @@ class Game extends Component {
       indexQuestion,
       askArray,
       isDisable,
-      allAnswers,
+      randomArray,
       classNameCorrect,
+      answersDisabled,
+      remainingTime,
       classNameWrong } = this.state;
-
-    console.log(classNameCorrect, classNameWrong);
-    const randomArray = this.generateRandomIndex(allAnswers);
 
     return (
       <div>
         <Header />
+        <h4>{ remainingTime }</h4>
         {conditional
         && <h2 data-testid="question-category">{askArray[indexQuestion].category}</h2>}
         {conditional
@@ -97,6 +127,7 @@ class Game extends Component {
               onClick={ this.checkCorrectAnswer }
               className={ item === askArray[indexQuestion]
                 .correct_answer ? classNameCorrect : classNameWrong }
+              disabled={ answersDisabled }
             >
               {item}
             </button>
