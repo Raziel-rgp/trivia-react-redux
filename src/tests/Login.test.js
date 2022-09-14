@@ -7,16 +7,16 @@ import renderWithRouterAndRedux from "./helpers/renderWithRouterAndRedux";
 describe('Testando o componente Login', () => {
     test('Testa se a página possui as labels "nome" e "E-mail"', () => {
         renderWithRouterAndRedux(<Login />);
-        const nameText = screen.getByText(/nome/i);
-        const emailText = screen.getByText(/e-mail/i);
+        const nameText = screen.getByPlaceholderText(/nome/i);
+        const emailText = screen.getByPlaceholderText(/e-mail/i);
 
         expect(nameText).toBeInTheDocument();
         expect(emailText).toBeInTheDocument();
     });
     test('Testa os campos de input de texto', () => {
         renderWithRouterAndRedux(<Login />);
-        const textNameInput = screen.getByTestId('input-player-name');
-        const textEmailInput = screen.getByTestId('input-gravatar-email');
+        const textNameInput = screen.getByPlaceholderText(/nome/i);
+        const textEmailInput = screen.getByPlaceholderText(/e-mail/i);
 
         expect(textNameInput).toBeInTheDocument();
         expect(textEmailInput).toBeInTheDocument();
@@ -27,12 +27,12 @@ describe('Testando o componente Login', () => {
         expect(playButton).toBeInTheDocument();
 
         const testInput = 'teste';
-        userEvent.type(screen.getByTestId('input-player-name'), testInput);
-        userEvent.type(screen.getByTestId('input-gravatar-email'), testInput);
+        userEvent.type(screen.getByPlaceholderText(/nome/i), testInput);
+        userEvent.type(screen.getByPlaceholderText(/e-mail/i), testInput);
         const activatedPlayButton = screen.getByRole('button', { name: /play/i, value: true });
         expect(activatedPlayButton).toBeInTheDocument();
         userEvent.click(activatedPlayButton)
-        await fetch('https://opentdb.com/api_token.php?command=request');
+        // await fetch('https://opentdb.com/api_token.php?command=request');
     });
     test('Testa o botão "Configuração"', () => {
         const { history } = renderWithRouterAndRedux(<Login />);
