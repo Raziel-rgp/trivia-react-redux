@@ -46,45 +46,47 @@ class Login extends Component {
     } = this.state;
 
     return (
-      <div>
-        <form onSubmit={ this.handleSubmit }>
-          <label htmlFor="name">
-            Nome
+      <div className="login_page">
+        <div className="login_container">
+          <h2>Trybe Trivia</h2>
+          <form
+            className="form_container"
+            onSubmit={ this.handleSubmit }
+          >
             <input
               type="text"
               data-testid="input-player-name"
               name="name"
               value={ name }
               onChange={ this.handleChange }
+              placeholder="Nome"
             />
-          </label>
-          <label htmlFor="gravatarEmail">
-            E-mail
             <input
               type="text"
               data-testid="input-gravatar-email"
               name="gravatarEmail"
               value={ gravatarEmail }
               onChange={ this.handleChange }
+              placeholder="E-mail"
             />
-          </label>
-          <button
-            type="submit"
-            data-testid="btn-play"
-            disabled={ buttonDisable }
-            onClick={ this.requestTokenAPI }
-          >
-            Play
-          </button>
-          <Link to="/settings">
             <button
-              data-testid="btn-settings"
-              type="button"
+              type="submit"
+              data-testid="btn-play"
+              disabled={ buttonDisable }
+              onClick={ this.requestTokenAPI }
             >
-              Configuração
+              Play
             </button>
-          </Link>
-        </form>
+            <Link to="/settings">
+              <button
+                data-testid="btn-settings"
+                type="button"
+              >
+                Configuração
+              </button>
+            </Link>
+          </form>
+        </div>
       </div>
     );
   }
