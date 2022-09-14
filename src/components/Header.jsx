@@ -8,7 +8,7 @@ class Header extends Component {
     const { gravatarEmail, name, score } = this.props;
     const hashEmail = md5(gravatarEmail).toString();
     return (
-      <div>
+      <div className="header">
         <p>{gravatarEmail}</p>
         <p data-testid="header-player-name">
           { name }

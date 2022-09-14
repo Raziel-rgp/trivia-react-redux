@@ -131,48 +131,59 @@ class Game extends Component {
       showNextButton } = this.state;
 
     return (
-      <div>
+      <>
         <Header />
-        <h4>{ remainingTime }</h4>
-        {conditional
-        && <h2 data-testid="question-category">{askArray[indexQuestion].category}</h2>}
-        {conditional
-           && <p data-testid="question-text">{askArray[indexQuestion].question}</p>}
-        <div data-testid="answer-options">
-          {conditional && randomArray.map((item, index) => (
-            <button
-              data-testid={
-                item === askArray[indexQuestion]
-                  .correct_answer ? ANSWER_CORRECT : `wrong-answer-${index}`
-              }
-              key={ index }
-              name={
-                item === askArray[indexQuestion]
-                  .correct_answer ? ANSWER_CORRECT : `wrong-answer-${index}`
-              }
-              type="button"
-              onClick={ this.pauseButton }
-              className={ item === askArray[indexQuestion]
-                .correct_answer ? classNameCorrect : classNameWrong }
-              disabled={ answersDisabled }
-            >
-              {item}
-            </button>
-          ))}
-        </div>
-        {showNextButton
+        <div className="game_page">
+          <div className="game_container">
+            <h4>{ remainingTime }</h4>
+            {conditional
+        && <h4 data-testid="question-category">{askArray[indexQuestion].category}</h4>}
+            {conditional
+           && <h3 data-testid="question-text">{askArray[indexQuestion].question}</h3>}
+          </div>
+          <div
+            className="answers_container"
+            data-testid="answer-options"
+          >
+            {conditional && randomArray.map((item, index) => (
+              <button
+                data-testid={
+                  item === askArray[indexQuestion]
+                    .correct_answer ? ANSWER_CORRECT : `wrong-answer-${index}`
+                }
+                key={ index }
+                id={
+                  item === askArray[indexQuestion]
+                    .correct_answer ? ANSWER_CORRECT : 'wrong-answer'
+                }
+                name={
+                  item === askArray[indexQuestion]
+                    .correct_answer ? ANSWER_CORRECT : `wrong-answer-${index}`
+                }
+                type="button"
+                onClick={ this.pauseButton }
+                className={ item === askArray[indexQuestion]
+                  .correct_answer ? classNameCorrect : classNameWrong }
+                disabled={ answersDisabled }
+              >
+                {item}
+              </button>
+            ))}
+          </div>
+          {showNextButton
         && (
           <button
             data-testid="btn-next"
             disabled={ isDisable }
             onClick={ this.handleClick }
             type="button"
+            className="next_button"
           >
             Next
           </button>
         )}
-
-      </div>
+        </div>
+      </>
     );
   }
 }
