@@ -18,9 +18,8 @@ class Login extends Component {
   requestTokenAPI = async (e) => {
     e.preventDefault();
     const { gravatarEmail, name } = this.state;
-    const { dispatch } = this.props;
+    const { history, dispatch } = this.props;
     dispatch(requestLogin(gravatarEmail, name));
-    const { history } = this.props;
     const requestToken = await FetchAPI();
     localStorage.setItem('token', requestToken);
     history.push('/game');
