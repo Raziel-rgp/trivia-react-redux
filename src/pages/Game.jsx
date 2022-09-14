@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { requestAskAPI } from '../services/FetchAPI';
 import Header from '../components/Header';
-import { requestScore } from '../redux/actions';
+import { requestScore, requestAssertions } from '../redux/actions';
 
 const ANSWER_CORRECT = 'correct-answer';
 const ALL_SCORES = {
@@ -82,6 +82,7 @@ class Game extends Component {
     const calcPoints = point + (remainingTime * ALL_SCORES[difficulty]);
     if (target.name === ANSWER_CORRECT) {
       dispatch(requestScore(calcPoints));
+      dispatch(requestAssertions());
     } return 0;
   };
 
