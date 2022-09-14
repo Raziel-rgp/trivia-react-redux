@@ -11,6 +11,11 @@ class Feedback extends Component {
     history.push('/');
   };
 
+  redirectRankingPage = () => {
+    const { history } = this.props;
+    history.push('/ranking');
+  };
+
   render() {
     const { assertions, score } = this.props;
     const MIN_ASSERTIONS = 3;
@@ -18,7 +23,6 @@ class Feedback extends Component {
     return (
       <div data-testid="feedback-text">
         <Header />
-        {}
         <p data-testid="feedback-total-question">{assertions}</p>
         <p data-testid="feedback-total-score">{score}</p>
         {assertions >= MIN_ASSERTIONS
@@ -39,6 +43,13 @@ class Feedback extends Component {
           data-testid="btn-play-again"
         >
           Play again
+        </button>
+        <button
+          type="button"
+          onClick={ this.redirectRankingPage }
+          data-testid="btn-ranking"
+        >
+          Ranking
         </button>
       </div>
     );
