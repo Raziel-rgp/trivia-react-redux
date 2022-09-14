@@ -26,7 +26,7 @@ const player = (state = INITIAL_STATE, action) => {
     assertions: state.assertions + 1,
   };
   case RESET_SCORE: return {
-    INITIAL_STATE,
+    ...INITIAL_STATE,
   };
   default: return state;
   }
