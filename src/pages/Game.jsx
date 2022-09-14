@@ -49,6 +49,9 @@ class Game extends Component {
 
   handleClick = () => {
     const { indexQuestion, allAnswers } = this.state;
+    const { history } = this.props;
+    const MAX_LENGTH = 4;
+    if (indexQuestion >= MAX_LENGTH) history.push('/feedback');
     this.setState({ indexQuestion: indexQuestion + 1,
       classNameCorrect: '',
       classNameWrong: '',
@@ -98,14 +101,9 @@ class Game extends Component {
 
   validIndex = () => {
     const { askArray, indexQuestion } = this.state;
-    const MAX_LENGTH = 4;
-    const indexQuestionLength = indexQuestion >= MAX_LENGTH;
     const allAnswers = [askArray[indexQuestion].correct_answer,
       ...askArray[indexQuestion].incorrect_answers];
     this.setState({ allAnswers, randomArray: this.generateRandomIndex(allAnswers) });
-    if (indexQuestionLength) {
-      this.setState({ isDisable: true });
-    }
   };
 
   // código baseado na função do site https://www.horadecodar.com.br/2020/10/26/gerar-varios-numeros-aleatorios-sem-repeticao-em-javascript/
