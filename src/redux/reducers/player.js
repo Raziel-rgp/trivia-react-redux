@@ -1,5 +1,5 @@
-import { LOG_IN, 
-  REQUEST_SCORE, 
+import { LOG_IN,
+  REQUEST_SCORE,
   REQUEST_ASSERTIONS,
   RESET_SCORE } from '../actions';
 
