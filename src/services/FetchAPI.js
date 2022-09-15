@@ -4,7 +4,6 @@ const URL_ASK = 'https://opentdb.com/api.php?amount=5&token=';
 const requestAPI = async () => {
   const response = await fetch(URL);
   const object = await response.json();
-  console.log(object.token);
   return object.token;
 };
 

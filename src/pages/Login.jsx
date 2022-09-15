@@ -15,10 +15,9 @@ class Login extends Component {
     };
   }
 
-  requestTokenAPI = async (e) => {
-    e.preventDefault();
-    const { gravatarEmail, name } = this.state;
+  requestTokenAPI = async () => {
     const { history, dispatch } = this.props;
+    const { gravatarEmail, name } = this.state;
     dispatch(requestLogin(gravatarEmail, name));
     const requestToken = await FetchAPI();
     localStorage.setItem('token', requestToken);
@@ -51,7 +50,6 @@ class Login extends Component {
           <h2>Trybe Trivia</h2>
           <form
             className="form_container"
-            onSubmit={ this.handleSubmit }
           >
             <input
               type="text"
@@ -70,7 +68,7 @@ class Login extends Component {
               placeholder="E-mail"
             />
             <button
-              type="submit"
+              type="button"
               data-testid="btn-play"
               disabled={ buttonDisable }
               onClick={ this.requestTokenAPI }
