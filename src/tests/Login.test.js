@@ -7,8 +7,8 @@ import renderWithRouterAndRedux from "./helpers/renderWithRouterAndRedux";
 describe('Testando o componente Login', () => {
     test('Testa os campos de input de texto', () => {
         renderWithRouterAndRedux(<Login />);
-        const textNameInput = screen.getByTestId('input-player-name');
-        const textEmailInput = screen.getByTestId('input-gravatar-email');
+        const textNameInput = screen.getByPlaceholderText(/nome/i);
+        const textEmailInput = screen.getByPlaceholderText(/e-mail/i);
 
         expect(textNameInput).toBeInTheDocument();
         expect(textEmailInput).toBeInTheDocument();
